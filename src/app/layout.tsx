@@ -19,12 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fa" dir="rtl">
+    <html lang="en">
       <body>
         <ClientProvider>
           <RootProvider>{children}</RootProvider>
         </ClientProvider>
-        <ToastContainer rtl />
+        <ToastContainer />
       </body>
     </html>
   );

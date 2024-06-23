@@ -2,7 +2,6 @@
 
 import { Input } from "@nextui-org/react";
 import { ChangeEvent, useState } from "react";
-import convertToPersian from "num-to-persian";
 import convertAPToEnglish from "ap-to-english";
 
 //Redux
@@ -24,12 +23,10 @@ export const MobileInput = () => {
   //Functions
   function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.value || e.target.value.length < 11) {
-      setError({ status: true, message: "فرمت شماره موبایل نادرست است" });
+      setError({ status: true, message: "Mobile format is incorrect" });
       dispatch(
         setMobileAuthAction(
-          convertToPersian(
-            convertAPToEnglish(e.target.value.replace(/\,/g, ""))
-          )
+          convertAPToEnglish(e.target.value.replace(/\,/g, ""))
         )
       );
     } else if (
@@ -42,9 +39,7 @@ export const MobileInput = () => {
       setError({ status: false, message: "" });
       dispatch(
         setMobileAuthAction(
-          convertToPersian(
-            convertAPToEnglish(e.target.value.replace(/\,/g, ""))
-          )
+          convertAPToEnglish(e.target.value.replace(/\,/g, ""))
         )
       );
     }
@@ -53,7 +48,7 @@ export const MobileInput = () => {
   return (
     <Input
       type="text"
-      label="شماره موبایل"
+      label="Mobile"
       onChange={onChangeHandler}
       value={mobile}
       isInvalid={error.status}

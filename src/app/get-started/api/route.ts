@@ -2,7 +2,7 @@ import * as fs from "fs";
 import { NextResponse } from "next/server";
 import uniqueString from "unique-string";
 
-//Interfaces
+//Types
 import { IUser } from "@/common/interfaces";
 
 export async function GET(request: Request) {
@@ -19,21 +19,15 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  console.log(
-    !body.mobile,
-    body.mobile < 11,
-    body.mobile > 11,
-    body.mobile,
-    body.mobile.length
-  );
-
   if (
     !body.mobile ||
     body.mobile.length !== 11 ||
     !body.password ||
     body.password.length < 6
   ) {
-    return new Response("اطلاعات وارد شده نادرست است", { status: 400 });
+    return new Response("The entered information is incorrect", {
+      status: 400,
+    });
   }
 
   const usersJson = fs.readFileSync(
@@ -47,7 +41,7 @@ export async function POST(request: Request) {
   const user = await users.find((user) => user.mobile === body.mobile);
   if (user) {
     if (user.password !== body.password) {
-      return new Response("رمزعبور نادرست است", { status: 401 });
+      return new Response("The password is incorrect", { status: 401 });
     }
     token = user.token.token;
     if (user.token.expires < new Date().getTime()) {

@@ -1,8 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("./../fonts/yekan-bakh/yekan-font.css");
 
 * {
-  font-family: "yekan-bakh", sans-serif !important;
+  /* font-family: "yekan-bakh", sans-serif !important; */
 }

@@ -1,5 +1,8 @@
+//Components
+import { HomeProvider } from "@/components/pages/home";
+
 const Home = () => {
-  return <div>page</div>;
+  return <HomeProvider />;
 };
 
 export default Home;

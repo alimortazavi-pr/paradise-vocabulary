@@ -66,7 +66,7 @@ export function authSubmitAction(): AppThunk {
   return async (dispatch, getState) => {
     try {
       const res = await axios.post("/get-started/api", {
-        mobile: convertAPToEnglish(getState().auth.authForm.mobile).toString(),
+        mobile: getState().auth.authForm.mobile,
         password: getState().auth.authForm.password,
       });
       storage.setToken(res.data.token);

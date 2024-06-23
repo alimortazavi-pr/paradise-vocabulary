@@ -19,7 +19,9 @@ export const SubmitButton = () => {
   async function submit() {
     try {
       await dispatch(authSubmitAction());
-      toast.success("با موفقیت وارد شدید", { position: "top-center" });
+      toast.success("SignIn|SignUp is Successfully", {
+        position: "top-center",
+      });
       router.push("/");
     } catch (error: any) {
       toast.error(error.message, { position: "top-center" });
@@ -34,7 +36,7 @@ export const SubmitButton = () => {
       variant="flat"
       onClick={submit}
     >
-      ثبت‌ نام | ورود
+      Submit
     </Button>
   );
 };

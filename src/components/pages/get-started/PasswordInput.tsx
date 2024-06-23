@@ -26,7 +26,7 @@ export const PasswordInput = () => {
     if (!e.target.value || e.target.value.length < 6) {
       setError({
         status: true,
-        message: "رمزعبور نمیتواند کمتر از ۶ حرف باشد",
+        message: "The password must be at least 6 characters",
       });
       dispatch(setPasswordAuthAction(e.target.value));
     } else {
@@ -39,7 +39,7 @@ export const PasswordInput = () => {
     <Input
       className="mb-3"
       type="password"
-      label="رمزعبور"
+      label="Password"
       onChange={onChangeHandler}
       value={password}
       isInvalid={error.status}
