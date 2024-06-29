@@ -13,8 +13,9 @@ import { toast } from "react-toastify";
 import { INextUIModalProps, IWord } from "@/common/interfaces";
 
 //Redux
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { createWordAction } from "@/lib/words/actions";
+import { isLoadingSelector } from "@/lib/layouts/selectors";
 
 //Components
 import { EnglishInput } from "./EnglishInput";
@@ -28,6 +29,7 @@ export const CreateWordModal: FC<INextUIModalProps> = ({
 }) => {
   //Redux
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(isLoadingSelector);
 
   //States
   const [word, setWord] = useState<IWord>({
@@ -76,7 +78,7 @@ export const CreateWordModal: FC<INextUIModalProps> = ({
               <Button color="danger" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" onPress={submit}>
+              <Button color="primary" onPress={submit} isLoading={isLoading}>
                 Submit
               </Button>
             </ModalFooter>

@@ -18,6 +18,7 @@ import { INextUIModalProps, IWord } from "@/common/interfaces";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { editWordAction, setSelectedWord } from "@/lib/words/actions";
 import { selectedWordSelector } from "@/lib/words/selectors";
+import { isLoadingSelector } from "@/lib/layouts/selectors";
 
 //Components
 import { EnglishInput } from "./EnglishInput";
@@ -33,6 +34,7 @@ export const EditWordModal: FC<INextUIModalProps> = ({
   //Redux
   const dispatch = useAppDispatch();
   const selectedWord = useAppSelector(selectedWordSelector);
+  const isLoading = useAppSelector(isLoadingSelector);
 
   //States
   const [word, setWord] = useState<IWord>({
@@ -92,7 +94,7 @@ export const EditWordModal: FC<INextUIModalProps> = ({
               <Button color="danger" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" onPress={submit}>
+              <Button color="primary" onPress={submit} isLoading={isLoading}>
                 Submit
               </Button>
             </ModalFooter>

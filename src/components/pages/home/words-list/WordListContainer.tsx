@@ -11,6 +11,7 @@ import { wordsSelector } from "@/lib/words/selectors";
 //Components
 import { SingleWord } from "./SingleWord";
 import { EditWordModal } from "../create-and-edit-word";
+import { toast } from "react-toastify";
 
 export const WordListContainer = () => {
   //Redux
@@ -22,8 +23,19 @@ export const WordListContainer = () => {
 
   //Life cycle
   useEffect(() => {
-    dispatch(getAllUserWords());
+    getAllUserWordsFunc();
   }, []);
+
+  //Functions
+  async function getAllUserWordsFunc() {
+    try {
+      await dispatch(getAllUserWords());
+    } catch (error: any) {
+      if (error.message != "Token is null") {
+        toast.error(error.message, { position: "top-center" });
+      }
+    }
+  }
 
   return (
     <>

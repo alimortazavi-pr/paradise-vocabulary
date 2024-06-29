@@ -4,9 +4,9 @@ import { Button, useDisclosure } from "@nextui-org/react";
 import { Add } from "iconsax-react";
 
 //Components
-import { CreateWordModal } from "./CreateWordModal";
+import { CreateWordModal } from "@/components/pages/home/create-and-edit-word/CreateWordModal";
 
-export const FAB = () => {
+export const CreateWordButton = () => {
   //NextUI
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -16,10 +16,8 @@ export const FAB = () => {
         isIconOnly
         color="primary"
         aria-label="Create"
-        className="fixed bottom-5 end-5 md:hidden"
-        size="lg"
-        variant="shadow"
         onClick={onOpen}
+        className="hidden md:flex"
       >
         <Add size={"30"} />
       </Button>

@@ -10,8 +10,9 @@ import { FC, useState } from "react";
 import { toast } from "react-toastify";
 
 //Redux
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { deleteWordAction } from "@/lib/words/actions";
+import { isLoadingSelector } from "@/lib/layouts/selectors";
 
 interface IProps {
   wordId: string;
@@ -19,6 +20,7 @@ interface IProps {
 export const DeleteWordButton: FC<IProps> = ({ wordId }) => {
   //Redux
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(isLoadingSelector);
 
   //States
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +39,11 @@ export const DeleteWordButton: FC<IProps> = ({ wordId }) => {
   }
 
   return (
-    <Popover placement="right" isOpen={isOpen} onOpenChange={(open) => setIsOpen(open)}>
+    <Popover
+      placement="right"
+      isOpen={isOpen}
+      onOpenChange={(open) => setIsOpen(open)}
+    >
       <PopoverTrigger>
         <Button isIconOnly color="danger" size="sm" variant="flat">
           <Tooltip content="Remove Word">
@@ -57,6 +63,7 @@ export const DeleteWordButton: FC<IProps> = ({ wordId }) => {
               size="sm"
               variant="flat"
               onClick={deleteWordFunc}
+              isLoading={isLoading}
             >
               Yes
             </Button>

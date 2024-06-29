@@ -5,12 +5,14 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 //Redux
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { authSubmitAction } from "@/lib/auth/actions";
+import { isLoadingSelector } from "@/lib/layouts/selectors";
 
 export const SubmitButton = () => {
   //Redux
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(isLoadingSelector);
 
   //Next
   const router = useRouter();
@@ -35,6 +37,7 @@ export const SubmitButton = () => {
       className="w-full"
       variant="flat"
       onClick={submit}
+      isLoading={isLoading}
     >
       Submit
     </Button>

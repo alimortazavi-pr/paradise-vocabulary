@@ -13,4 +13,7 @@ export const storage = {
   setToken: (token: string) => {
     jsCookies.set("token", token, { expires: 90 });
   },
+  removeToken: () => {
+    jsCookies.remove("token");
+  },
 };

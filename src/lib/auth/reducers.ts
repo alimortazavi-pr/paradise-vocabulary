@@ -1,5 +1,5 @@
 //Types
-import { IAuthFrom, IAuthState } from "@/common/interfaces/auth";
+import { IAuthFrom, IAuthState, IUser } from "@/common/interfaces/auth";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 //Tools
@@ -15,10 +15,22 @@ const reducers = {
       },
     };
   },
-  setToken(state: IAuthState, action: PayloadAction<string>): IAuthState {
+  setToken(
+    state: IAuthState,
+    action: PayloadAction<string | undefined>
+  ): IAuthState {
     return {
       ...state,
       token: action.payload,
+    };
+  },
+  setUser(
+    state: IAuthState,
+    action: PayloadAction<IUser | undefined>
+  ): IAuthState {
+    return {
+      ...state,
+      user: action.payload,
     };
   },
 };

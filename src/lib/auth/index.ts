@@ -12,6 +12,7 @@ const initialState: IAuthState = {
     password: "",
   },
   token: undefined,
+  user: undefined,
 };
 
 export const authReducer = createSlice({

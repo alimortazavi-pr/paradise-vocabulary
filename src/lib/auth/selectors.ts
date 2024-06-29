@@ -1,5 +1,5 @@
 //Types
-import { IAuthFrom } from "@/common/interfaces";
+import { IAuthFrom, IUser } from "@/common/interfaces";
 import { RootState } from "@/lib";
 
 export function authFormSelector(state: RootState): IAuthFrom {
@@ -12,4 +12,8 @@ export function mobileAuthFormSelector(state: RootState): string {
 
 export function passwordAuthFormSelector(state: RootState): string {
   return state.auth.authForm.password;
+}
+
+export function userSelector(state: RootState): IUser | undefined {
+  return state.auth.user;
 }

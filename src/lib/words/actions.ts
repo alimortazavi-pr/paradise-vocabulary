@@ -1,7 +1,8 @@
 import { AppThunk } from "@/lib";
 import axios from "axios";
 
-//Actions of other reducers
+//Actions of other libs
+import { setIsLoading } from "../layouts/actions";
 
 //Reducer
 import { wordsReducer } from ".";
@@ -18,6 +19,7 @@ import { storage } from "@/common/utils";
 //Actions from actions
 export function getAllUserWords(): AppThunk {
   return async (dispatch) => {
+    dispatch(setIsLoading(true));
     try {
       const token = storage.getToken();
       const res = await axios.get("/api/words", {
@@ -26,7 +28,9 @@ export function getAllUserWords(): AppThunk {
         },
       });
       dispatch(setWords(res.data.words));
+      dispatch(setIsLoading(false));
     } catch (error: any) {
+      dispatch(setIsLoading(false));
       throw new Error(error?.response?.data || error.message);
     }
   };
@@ -35,6 +39,8 @@ export function getAllUserWords(): AppThunk {
 export function createWordAction(wordForm: IWord): AppThunk {
   return async (dispatch, getState) => {
     try {
+      dispatch(setIsLoading(true));
+
       const token = getState().auth.token;
       const res = await axios.post(
         "/api/words",
@@ -51,7 +57,9 @@ export function createWordAction(wordForm: IWord): AppThunk {
         }
       );
       dispatch(setWords([...getState().words.words, res.data.word]));
+      dispatch(setIsLoading(false));
     } catch (error: any) {
+      dispatch(setIsLoading(false));
       throw new Error(error?.response?.data || error.message);
     }
   };
@@ -60,6 +68,7 @@ export function createWordAction(wordForm: IWord): AppThunk {
 export function editWordAction(wordId: string, wordForm: IWord): AppThunk {
   return async (dispatch, getState) => {
     try {
+      dispatch(setIsLoading(true));
       const token = getState().auth.token;
       const res = await axios.put(
         `/api/words/${wordId}`,
@@ -82,7 +91,9 @@ export function editWordAction(wordId: string, wordForm: IWord): AppThunk {
           ),
         ])
       );
+      dispatch(setIsLoading(false));
     } catch (error: any) {
+      dispatch(setIsLoading(false));
       throw new Error(error?.response?.data || error.message);
     }
   };
@@ -91,6 +102,7 @@ export function editWordAction(wordId: string, wordForm: IWord): AppThunk {
 export function deleteWordAction(wordId: string): AppThunk {
   return async (dispatch, getState) => {
     try {
+      dispatch(setIsLoading(true));
       const token = getState().auth.token;
       await axios.delete(`/api/words/${wordId}`, {
         headers: {
@@ -102,7 +114,9 @@ export function deleteWordAction(wordId: string): AppThunk {
           ...getState().words.words.filter((word) => word.id !== wordId),
         ])
       );
+      dispatch(setIsLoading(false));
     } catch (error: any) {
+      dispatch(setIsLoading(false));
       throw new Error(error?.response?.data || error.message);
     }
   };
