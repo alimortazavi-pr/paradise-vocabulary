@@ -20,7 +20,7 @@ export function getAllUserWords(): AppThunk {
   return async (dispatch) => {
     try {
       const token = storage.getToken();
-      const res = await axios.get("/api", {
+      const res = await axios.get("/api/words", {
         headers: {
           token,
         },
@@ -37,7 +37,7 @@ export function createWordAction(wordForm: IWord): AppThunk {
     try {
       const token = getState().auth.token;
       const res = await axios.post(
-        "/api",
+        "/api/words",
         {
           english: wordForm.english,
           persian: wordForm.persian,
@@ -62,7 +62,7 @@ export function editWordAction(wordId: string, wordForm: IWord): AppThunk {
     try {
       const token = getState().auth.token;
       const res = await axios.put(
-        `/api/${wordId}`,
+        `/api/words/${wordId}`,
         {
           english: wordForm.english,
           persian: wordForm.persian,
@@ -92,7 +92,7 @@ export function deleteWordAction(wordId: string): AppThunk {
   return async (dispatch, getState) => {
     try {
       const token = getState().auth.token;
-      await axios.delete(`/api/${wordId}`, {
+      await axios.delete(`/api/words/${wordId}`, {
         headers: {
           token,
         },

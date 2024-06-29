@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import { NextResponse } from "next/server";
-import uniqueString from "unique-string";
 
 //Types
 import { IUser } from "@/common/interfaces";
@@ -45,7 +44,7 @@ export async function POST(request: Request) {
     }
     token = user.token.token;
     if (user.token.expires < new Date().getTime()) {
-      token = uniqueString();
+      token = user.mobile + new Date().getTime();
       user.token = {
         token: token,
         expires: new Date().getTime() + 1000 * 3600 * 24 * 90,
@@ -59,7 +58,7 @@ export async function POST(request: Request) {
       token,
     });
   } else {
-    token = uniqueString();
+    token = body.mobile + new Date().getTime();
     users.push({
       ...body,
       token: {

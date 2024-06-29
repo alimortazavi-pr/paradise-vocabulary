@@ -1,16 +1,13 @@
 import { FC } from "react";
+import { Divider, Tooltip } from "@nextui-org/react";
 
 //Types
 import { IWord } from "@/common/interfaces";
-import {
-  Button,
-  Divider,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-} from "@nextui-org/react";
-import { Eye, InfoCircle, Trash } from "iconsax-react";
+
+//Components
+import { DeleteWordButton } from "./DeleteWordButton";
+import { WordDescription } from "./WordDescription";
+import { ShowAndEditWordButton } from "./ShowAndEditWordButton";
 
 interface IProps {
   word: IWord;
@@ -31,47 +28,11 @@ export const SingleWord: FC<IProps> = ({ word }) => {
         </Tooltip>
         <Divider className="my-2" />
         <div className="flex items-center gap-2">
-          <Button isIconOnly color="primary" size="sm" variant="flat">
-            <Tooltip content="Show/Edit Word">
-              <Eye size={"18"} />
-            </Tooltip>
-          </Button>
+          <ShowAndEditWordButton word={word} />
           {word.description && (
-            <Popover placement="right">
-              <PopoverTrigger>
-                <Button isIconOnly color="secondary" size="sm" variant="flat">
-                  <Tooltip content="Description Word">
-                    <InfoCircle size={"18"} />
-                  </Tooltip>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <p className="max-w-sm p-3">{word.description}</p>
-              </PopoverContent>
-            </Popover>
+            <WordDescription description={word.description} />
           )}
-          <Popover placement="right">
-            <PopoverTrigger>
-              <Button isIconOnly color="danger" size="sm" variant="flat">
-                <Tooltip content="Remove Word">
-                  <Trash size={"18"} />
-                </Tooltip>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="p-2">
-                <h6 className="mb-2">Are you sure?</h6>
-                <div className="flex items-center justify-center gap-2">
-                  <Button color="danger" size="sm" variant="flat">
-                    Cancel
-                  </Button>
-                  <Button color="success" size="sm" variant="flat">
-                    Yes
-                  </Button>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <DeleteWordButton wordId={word.id as string} />
         </div>
       </div>
     </div>

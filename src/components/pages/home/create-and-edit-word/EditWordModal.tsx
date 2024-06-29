@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Modal,
   ModalContent,
@@ -6,15 +8,16 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 //Types
 import { INextUIModalProps, IWord } from "@/common/interfaces";
 
 //Redux
-import { useAppDispatch } from "@/lib/hooks";
-import { createWordAction } from "@/lib/words/actions";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { editWordAction, setSelectedWord } from "@/lib/words/actions";
+import { selectedWordSelector } from "@/lib/words/selectors";
 
 //Components
 import { EnglishInput } from "./EnglishInput";
@@ -25,9 +28,11 @@ export const EditWordModal: FC<INextUIModalProps> = ({
   onOpenChange,
   isOpen,
   onClose,
+  onOpen,
 }) => {
   //Redux
   const dispatch = useAppDispatch();
+  const selectedWord = useAppSelector(selectedWordSelector);
 
   //States
   const [word, setWord] = useState<IWord>({
@@ -37,6 +42,16 @@ export const EditWordModal: FC<INextUIModalProps> = ({
     important: false,
   });
 
+  //Life cycle
+  useEffect(() => {
+    if (selectedWord) {
+      setWord(selectedWord);
+      (onOpen as () => void)();
+    } else {
+      (onClose as () => void)();
+    }
+  }, [selectedWord]);
+
   //Functions
   function onCloseHandler() {
     setWord({
@@ -45,11 +60,14 @@ export const EditWordModal: FC<INextUIModalProps> = ({
       description: "",
       important: false,
     });
+    setSelectedWord(undefined);
   }
 
   async function submit() {
     try {
-      await dispatch(createWordAction(word));
+      await dispatch(
+        editWordAction((selectedWord as IWord).id as string, word)
+      );
       toast.success("The word has been edited", {
         position: "top-center",
       });
@@ -64,9 +82,7 @@ export const EditWordModal: FC<INextUIModalProps> = ({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              Edit Word
-            </ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">Edit Word</ModalHeader>
             <ModalBody>
               <EnglishInput word={word} setWord={setWord} />
               <PersianInput word={word} setWord={setWord} />

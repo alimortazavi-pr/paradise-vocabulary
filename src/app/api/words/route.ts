@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import * as fs from "fs";
-import uniqueString from "unique-string";
 
 //Routes
-import { checkToken } from "../get-started/api/route";
+import { checkToken } from "../get-started/route";
 
 //Types
 import { IUser, IWord } from "@/common/interfaces";
@@ -53,7 +52,7 @@ export async function POST(request: Request) {
   );
   let words = (await JSON.parse(wordsJson).words) as IWord[];
   const newWord: IWord = {
-    id: uniqueString(),
+    id: body.english + new Date().getTime(),
     user: user,
     english: body.english,
     persian: body.persian,

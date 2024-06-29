@@ -19,7 +19,7 @@ export function checkToken(): AppThunk {
     try {
       const token = storage.getToken();
       if (token) {
-        const res = await axios.get("/get-started/api", {
+        const res = await axios.get("/api/get-started", {
           headers: {
             token,
           },
@@ -65,7 +65,7 @@ export function setPasswordAuthAction(password: string): AppThunk {
 export function authSubmitAction(): AppThunk {
   return async (dispatch, getState) => {
     try {
-      const res = await axios.post("/get-started/api", {
+      const res = await axios.post("/api/get-started", {
         mobile: getState().auth.authForm.mobile,
         password: getState().auth.authForm.password,
       });
