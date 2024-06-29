@@ -1,5 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 
+export interface IWordsState {
+  words: IWord[];
+  selectedWord: IWord | undefined;
+}
+
 export interface IWord {
   id?: string;
   user?: string;

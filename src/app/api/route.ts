@@ -67,5 +67,5 @@ export async function POST(request: Request) {
     JSON.stringify({ words })
   );
 
-  return NextResponse.json(newWord);
+  return NextResponse.json({ word: newWord });
 }

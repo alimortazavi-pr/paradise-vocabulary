@@ -3,12 +3,14 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 //Reducers
 import layoutsReducer from "./layouts";
 import authReducer from "./auth";
+import wordsReducer from "./words";
 
 export function makeStore() {
   return configureStore({
     reducer: {
       layouts: layoutsReducer,
       auth: authReducer,
+      words: wordsReducer,
     },
   });
 }

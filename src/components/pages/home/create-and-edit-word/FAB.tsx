@@ -8,7 +8,7 @@ import { CreateWordModal } from "./CreateWordModal";
 
 export const FAB = () => {
   //NextUI
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   return (
     <>
@@ -27,6 +27,7 @@ export const FAB = () => {
         onOpenChange={onOpenChange}
         isOpen={isOpen}
         onOpen={onOpen}
+        onClose={onClose}
       />
     </>
   );
