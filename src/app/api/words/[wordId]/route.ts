@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import * as fs from "fs";
 
-//Routes
-import { checkToken } from "../../get-started/route";
-
 //Types
-import { IUser, IWord } from "@/common/interfaces";
+import { IUserAuth, IWord } from "@/common/interfaces";
+
+//Scripts
+import { checkToken } from "@/common/scripts/checkTokenServer";
 
 export async function PUT(
   request: Request,
@@ -18,7 +18,7 @@ export async function PUT(
   if (!checkTokenResponse.status) {
     return new Response(checkTokenResponse.message as string, { status: 401 });
   }
-  const user = (checkTokenResponse.message as { user: IUser }).user.mobile;
+  const user = (checkTokenResponse.message as { user: IUserAuth }).user.mobile;
 
   const body = await request.json();
   if (
@@ -76,7 +76,7 @@ export async function DELETE(
   if (!checkTokenResponse.status) {
     return new Response(checkTokenResponse.message as string, { status: 401 });
   }
-  const user = (checkTokenResponse.message as { user: IUser }).user.mobile;
+  const user = (checkTokenResponse.message as { user: IUserAuth }).user.mobile;
 
   const wordsJson = await fs.readFileSync(
     process.cwd() + "/src/db/words.json",

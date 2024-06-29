@@ -2,7 +2,10 @@ import * as fs from "fs";
 import { NextResponse } from "next/server";
 
 //Types
-import { IUser } from "@/common/interfaces";
+import { IUserAuth } from "@/common/interfaces";
+
+//Scripts
+import { checkToken } from "@/common/scripts/checkTokenServer";
 
 export async function GET(request: Request) {
   const token = request.headers.get("token");
@@ -12,7 +15,7 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.json({
-    user: (checkTokenResponse.message as { user: IUser }).user.mobile,
+    user: (checkTokenResponse.message as { user: IUserAuth }).user.mobile,
   });
 }
 
@@ -33,7 +36,7 @@ export async function POST(request: Request) {
     process.cwd() + "/src/db/users.json",
     "utf8"
   );
-  let users = JSON.parse(usersJson).users as IUser[];
+  let users = JSON.parse(usersJson).users as IUserAuth[];
   let token;
 
   //Check users
@@ -75,25 +78,4 @@ export async function POST(request: Request) {
   return NextResponse.json({
     token,
   });
-}
-
-export async function checkToken(token: string | null) {
-  if (token === null) {
-    return { status: false, message: "Token is null" };
-  }
-  const usersJson = fs.readFileSync(
-    process.cwd() + "/src/db/users.json",
-    "utf8"
-  );
-  let users = JSON.parse(usersJson).users as IUser[];
-
-  //Check users
-  const user = await users.find((user) => user.token.token === token);
-  if (user) {
-    if (user.token.expires > new Date().getTime())
-      return { status: true, message: { user } };
-    else return { status: false, message: "Token expired" };
-  } else {
-    return { status: false, message: "User is not exists" };
-  }
 }

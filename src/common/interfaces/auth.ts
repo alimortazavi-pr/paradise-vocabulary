@@ -1,4 +1,5 @@
 //Types
+import { IUser } from "./users";
 
 export interface IAuthState {
   authForm: IAuthFrom;
@@ -11,6 +12,11 @@ export interface IAuthFrom {
   password: string;
 }
 
-export interface IUser {
+export interface IUserAuth {
   mobile: string;
+  password: string;
+  token: {
+    token: string;
+    expires: number;
+  };
 }

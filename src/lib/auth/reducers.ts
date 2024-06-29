@@ -1,5 +1,5 @@
 //Types
-import { IAuthFrom, IAuthState, IUser } from "@/common/interfaces/auth";
+import { IAuthFrom, IAuthState, IUser } from "@/common/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 //Tools
