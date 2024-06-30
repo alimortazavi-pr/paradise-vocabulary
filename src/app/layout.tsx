@@ -10,7 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: "Paradise Vocabulary",
-  description: "Created by alimor.ir",
+  description: "Powered By Paradise Code Created By alimor.ir",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-gray-100">
-      <body >
+      <body>
         <ClientProvider>
           <RootProvider>{children}</RootProvider>
         </ClientProvider>
