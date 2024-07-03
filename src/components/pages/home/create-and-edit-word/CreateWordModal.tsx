@@ -62,7 +62,7 @@ export const CreateWordModal: FC<INextUIModalProps> = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onCloseHandler}>
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onCloseHandler} placement="center">
       <ModalContent>
         {(onClose) => (
           <>
