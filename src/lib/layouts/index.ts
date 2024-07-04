@@ -9,6 +9,7 @@ import reducers from "@/lib/layouts/reducers";
 const initialState: ILayoutsState = {
   darkMode: false,
   isLoading: false,
+  isVisibleTranslator: false,
 };
 
 export const layoutsReducer = createSlice({

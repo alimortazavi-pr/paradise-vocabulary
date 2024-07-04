@@ -24,6 +24,12 @@ const reducers = {
       isLoading: action.payload,
     };
   },
+  setIsVisibleTranslator(state: ILayoutsState, action: PayloadAction<boolean>) {
+    return {
+      ...state,
+      isVisibleTranslator: action.payload,
+    };
+  },
 };
 
 export default reducers;

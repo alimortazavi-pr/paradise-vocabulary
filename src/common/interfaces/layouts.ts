@@ -5,6 +5,7 @@ import { UseDisclosureProps } from "@nextui-org/react";
 export interface ILayoutsState {
   darkMode: boolean;
   isLoading: boolean;
+  isVisibleTranslator: boolean;
 }
 
 export interface INextUIModalProps extends UseDisclosureProps {

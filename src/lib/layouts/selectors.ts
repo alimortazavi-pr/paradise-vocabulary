@@ -8,3 +8,7 @@ export function darkModeSelector(state: RootState): boolean {
 export function isLoadingSelector(state: RootState): boolean {
   return state.layouts.isLoading;
 }
+
+export function isVisibleTranslatorSelector(state: RootState): boolean {
+  return state.layouts.isVisibleTranslator;
+}
