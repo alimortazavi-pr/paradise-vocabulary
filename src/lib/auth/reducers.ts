@@ -1,36 +1,41 @@
-//Types
-import { IAuthFrom, IAuthState, IUser } from "@/common/interfaces";
 import { PayloadAction } from "@reduxjs/toolkit";
 
+//Interfaces
+import { IAuthState } from "@/common/interfaces";
+
 //Tools
-import { storage } from "@/common/utils";
+import Cookies from "js-cookie";
 
 const reducers = {
-  setAuthForm(state: IAuthState, action: PayloadAction<IAuthFrom>): IAuthState {
+  authenticate: (state: IAuthState, action: PayloadAction<any>): IAuthState => {
     return {
       ...state,
-      authForm: {
-        mobile: action.payload.mobile,
-        password: action.payload.password,
-      },
+      token: action.payload.token,
+      didTryAutoLogin: true,
+      isAuth: true,
     };
   },
-  setToken(
-    state: IAuthState,
-    action: PayloadAction<string | undefined>
-  ): IAuthState {
+  setDidTryAutoLogin: (state: IAuthState): IAuthState => {
     return {
       ...state,
-      token: action.payload,
+      didTryAutoLogin: true,
     };
   },
-  setUser(
-    state: IAuthState,
-    action: PayloadAction<IUser | undefined>
-  ): IAuthState {
+  logOut: (state: IAuthState): IAuthState => {
+    Cookies.remove("userAuthorization");
     return {
       ...state,
-      user: action.payload,
+      didTryAutoLogin: true,
+      isAuth: false,
+    };
+  },
+  setIsSigningUp: (
+    state: IAuthState,
+    action: PayloadAction<boolean>
+  ): IAuthState => {
+    return {
+      ...state,
+      isSigningUp: action.payload,
     };
   },
 };

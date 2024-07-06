@@ -6,8 +6,16 @@ export interface IWordsState {
 }
 
 export interface IWord {
-  id?: string;
-  user?: string;
+  _id: string;
+  user: string;
+  english: string;
+  persian: string;
+  description: string;
+  important: boolean;
+  deleted: boolean;
+}
+
+export interface IWordForm {
   english: string;
   persian: string;
   description: string;
@@ -15,6 +23,6 @@ export interface IWord {
 }
 
 export interface ICreateAndEditComponentsWords {
-  word: IWord;
-  setWord: Dispatch<SetStateAction<IWord>>;
+  word: IWordForm;
+  setWord: Dispatch<SetStateAction<IWordForm>>;
 }

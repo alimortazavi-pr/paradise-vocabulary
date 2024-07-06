@@ -12,9 +12,9 @@ import { User } from "iconsax-react";
 import { useRouter } from "next/navigation";
 
 //Redux
-import { userSelector } from "@/lib/auth/selectors";
+import { userSelector } from "@/lib/profile/selectors";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { logOutAction } from "@/lib/auth/actions";
+import { logOut } from "@/lib/auth/actions";
 
 export const ProfileButton = () => {
   //Redux
@@ -26,7 +26,7 @@ export const ProfileButton = () => {
 
   //Functions
   async function logOutFunc() {
-    await dispatch(logOutAction());
+    await dispatch(logOut());
     router.push("/get-started");
   }
 

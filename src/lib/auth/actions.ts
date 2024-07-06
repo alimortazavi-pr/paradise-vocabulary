@@ -1,103 +1,130 @@
 import { AppThunk } from "@/lib";
-import axios from "axios";
 
-//Reducer
-import { authReducer } from ".";
-
-//Actions from reducer
-export const { setAuthForm, setToken, setUser } = authReducer.actions;
-
-//Interfaces
-
-//Utils
-import { storage } from "@/common/utils";
-
-//Actions from other libs
+//Actions of other store
+import { setProfile } from "@/lib/profile/actions";
 import { setIsLoading } from "../layouts/actions";
 
+//Reducer
+import { authReducer } from "@/lib/auth";
+
+//Actions from reducer
+export const { authenticate, setDidTryAutoLogin, logOut, setIsSigningUp } =
+  authReducer.actions;
+
+//Interfaces
+import { IAuthForm } from "@/common/interfaces";
+
+//Tools
+import api from "@/services/axiosInstance";
+import Cookies from "js-cookie";
+
 //Actions from actions
-export function checkToken(): AppThunk {
-  return async (dispatch, getState) => {
+export function autoLogin(token: string): AppThunk {
+  return async (dispatch) => {
     dispatch(setIsLoading(true));
     try {
-      const token = storage.getToken();
-      if (token) {
-        const res = await axios.get("/api/get-started", {
-          headers: {
-            token,
-          },
-        });
-        dispatch(setToken(token));
-        dispatch(setUser({ mobile: res.data.user }));
-        dispatch(setIsLoading(false));
-      } else {
-        throw new Error("Token not found");
-      }
-    } catch (error: any) {
-      dispatch(setIsLoading(false));
-      throw new Error(error?.response?.data || error.message);
-    }
-  };
-}
-
-export function setMobileAuthAction(mobile: string): AppThunk {
-  return async (dispatch, getState) => {
-    try {
+      const res = await api.get("/auth/check", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       dispatch(
-        setAuthForm({ mobile, password: getState().auth.authForm.password })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-}
-
-export function setPasswordAuthAction(password: string): AppThunk {
-  return async (dispatch, getState) => {
-    try {
-      dispatch(
-        setAuthForm({
-          mobile: getState().auth.authForm.mobile,
-          password: password,
+        authenticate({
+          token: token,
         })
       );
-    } catch (error) {
-      console.log(error);
+      dispatch(setProfile(res.data.user));
+      dispatch(setIsLoading(false));
+    } catch (err: any) {
+      if (
+        err.response?.status === 403 ||
+        err.response?.status === 401 ||
+        err.response?.data?.message === "invalid token"
+      ) {
+        dispatch(logOut());
+      } else {
+        console.log(err);
+      }
+      dispatch(setIsLoading(false));
     }
   };
 }
 
-export function authSubmitAction(): AppThunk {
-  return async (dispatch, getState) => {
-    try {
-      dispatch(setIsLoading(true));
-      const res = await axios.post("/api/get-started", {
-        mobile: getState().auth.authForm.mobile,
-        password: getState().auth.authForm.password,
-      });
-      storage.setToken(res.data.token);
-      dispatch(setToken(res.data.token));
-      dispatch(setUser({ mobile: getState().auth.authForm.mobile }));
-      dispatch(setIsLoading(false));
-    } catch (error: any) {
-      dispatch(setIsLoading(false));
-
-      throw new Error(error?.response?.data || error.message);
-    }
-  };
-}
-
-export function logOutAction(): AppThunk {
+export function checkMobileExist(mobile: string): AppThunk {
   return async (dispatch) => {
     try {
       dispatch(setIsLoading(true));
-      await storage.removeToken();
-      await dispatch(setToken(undefined));
-      await dispatch(setUser(undefined));
+      const res = await api.post("/auth/check-mobile-exist", { mobile });
+      return res.data.isMustRegister;
+    } catch (err: any) {
       dispatch(setIsLoading(false));
-    } catch (error: any) {
-      dispatch(setIsLoading(false));
-      throw new Error(error?.response?.data || error.message);
+      throw new Error(err.response.data.message);
     }
   };
+}
+
+export function requestNewCode(mobile: string): AppThunk {
+  return async (dispatch) => {
+    dispatch(setIsLoading(true));
+    try {
+      const res = await api.post("/auth/request-code", { mobile });
+      dispatch(setIsLoading(false));
+    } catch (err: any) {
+      dispatch(setIsLoading(false));
+      throw new Error(err.response.data.message);
+    }
+  };
+}
+
+export function signUp(form: IAuthForm): AppThunk {
+  return async (dispatch) => {
+    dispatch(setIsLoading(true));
+    try {
+      const res = await api.post("/auth/register", form);
+      dispatch(
+        authenticate({
+          token: res.data.token,
+        })
+      );
+      dispatch(setProfile(res.data.user));
+      saveDataToLocal(res.data.token, res.data.user);
+      dispatch(setIsLoading(false));
+    } catch (err: any) {
+      dispatch(setIsLoading(false));
+      throw new Error(err.response.data.message);
+    }
+  };
+}
+
+export function signIn(form: IAuthForm): AppThunk {
+  return async (dispatch) => {
+    dispatch(setIsLoading(true));
+    try {
+      const res = await api.post("/auth/login", form);
+      dispatch(
+        authenticate({
+          user: res.data.user,
+          token: res.data.token,
+        })
+      );
+      dispatch(setProfile(res.data.user));
+      saveDataToLocal(res.data.token, res.data.user);
+      dispatch(setIsLoading(false));
+    } catch (err: any) {
+      dispatch(setIsLoading(false));
+      throw new Error(err.response.data.message);
+    }
+  };
+}
+
+//Functions
+export function saveDataToLocal(token: string, user: object) {
+  Cookies.set(
+    "userAuthorization",
+    JSON.stringify({
+      token: token,
+      user: user,
+    }),
+    { expires: 90 }
+  );
 }

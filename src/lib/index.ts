@@ -3,6 +3,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 //Reducers
 import layoutsReducer from "./layouts";
 import authReducer from "./auth";
+import profileReducer from "./profile";
 import wordsReducer from "./words";
 
 export function makeStore() {
@@ -10,6 +11,7 @@ export function makeStore() {
     reducer: {
       layouts: layoutsReducer,
       auth: authReducer,
+      profile: profileReducer,
       words: wordsReducer,
     },
   });

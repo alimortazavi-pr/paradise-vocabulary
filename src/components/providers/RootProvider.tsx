@@ -2,10 +2,12 @@
 
 import { FC, PropsWithChildren, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 //Redux
-import { useAppDispatch } from "@/lib/hooks";
-import { checkToken } from "@/lib/auth/actions";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { didTryAutoLoginSelector } from "@/lib/auth/selectors";
+import { autoLogin } from "@/lib/auth/actions";
 
 export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
   //Redux
@@ -13,17 +15,25 @@ export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
 
   //Next
   const router = useRouter();
+  const didTryAutoLogin = useAppSelector(didTryAutoLoginSelector);
 
   //Lifecycle
   useEffect(() => {
-    checkTokenFunc();
-  }, []);
+    autoLoginFunc();
+  }, [dispatch, didTryAutoLogin]);
 
   //Functions
-  async function checkTokenFunc() {
-    try {
-      await dispatch(checkToken());
-    } catch (error: any) {
+  async function autoLoginFunc() {
+    const userAuthorization = Cookies.get("userAuthorization");
+    if (userAuthorization && !didTryAutoLogin) {
+      const transformedData = JSON.parse(userAuthorization);
+      try {
+        dispatch(autoLogin(transformedData.token));
+      } catch (err: any) {
+        router.push("/get-started");
+        console.log(err);
+      }
+    } else if (!userAuthorization) {
       router.push("/get-started");
     }
   }

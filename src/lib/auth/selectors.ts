@@ -1,19 +1,19 @@
-//Types
-import { IAuthFrom, IUser } from "@/common/interfaces";
 import { RootState } from "@/lib";
 
-export function authFormSelector(state: RootState): IAuthFrom {
-  return state.auth.authForm;
+//Interfaces
+
+export function isAuthSelector(state: RootState): boolean {
+  return state.auth.isAuth;
 }
 
-export function mobileAuthFormSelector(state: RootState): string {
-  return state.auth.authForm.mobile;
+export function didTryAutoLoginSelector(state: RootState): boolean {
+  return state.auth.didTryAutoLogin;
 }
 
-export function passwordAuthFormSelector(state: RootState): string {
-  return state.auth.authForm.password;
+export function tokenSelector(state: RootState): string | null {
+  return state.auth.token;
 }
 
-export function userSelector(state: RootState): IUser | undefined {
-  return state.auth.user;
+export function isSigningUpSelector(state: RootState): boolean {
+  return state.auth.isSigningUp;
 }

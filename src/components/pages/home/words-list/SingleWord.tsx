@@ -32,7 +32,7 @@ export const SingleWord: FC<IProps> = ({ word }) => {
           {word.description && (
             <WordDescription description={word.description} />
           )}
-          <DeleteWordButton wordId={word.id as string} />
+          <DeleteWordButton wordId={word._id as string} />
         </div>
       </div>
     </div>

@@ -1,22 +1,30 @@
-//Types
-import { IUser } from "./users";
-
 export interface IAuthState {
-  authForm: IAuthFrom;
-  token?: string;
-  user: IUser | undefined;
+  token: null | string;
+  didTryAutoLogin: boolean;
+  isAuth: boolean;
+  isSigningUp: boolean;
 }
 
-export interface IAuthFrom {
-  mobile: string;
-  password: string;
+export interface IValidationErrorsCheckMobileExist {
+  paths: string[];
+  messages: {
+    mobile: string;
+  };
 }
 
-export interface IUserAuth {
+export interface IAuthForm {
+  firstName?: string;
+  lastName?: string;
   mobile: string;
-  password: string;
-  token: {
-    token: string;
-    expires: number;
+  code: string;
+}
+
+export interface IValidationErrorsAuthForm {
+  paths: string[];
+  messages: {
+    firstName: string;
+    lastName: string;
+    mobile: string;
+    code: string;
   };
 }

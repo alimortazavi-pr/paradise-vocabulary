@@ -1,18 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//Types
+//Interfaces
 import { IAuthState } from "@/common/interfaces";
 
 //Reducers
 import reducers from "@/lib/auth/reducers";
 
 const initialState: IAuthState = {
-  authForm: {
-    mobile: "",
-    password: "",
-  },
-  token: undefined,
-  user: undefined,
+  token: null,
+  didTryAutoLogin: false,
+  isAuth: false,
+  isSigningUp: false,
 };
 
 export const authReducer = createSlice({

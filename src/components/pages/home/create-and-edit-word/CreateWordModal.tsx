@@ -10,7 +10,7 @@ import { FC, useState } from "react";
 import { toast } from "react-toastify";
 
 //Types
-import { INextUIModalProps, IWord } from "@/common/interfaces";
+import { INextUIModalProps, IWordForm } from "@/common/interfaces";
 
 //Redux
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -32,7 +32,7 @@ export const CreateWordModal: FC<INextUIModalProps> = ({
   const isLoading = useAppSelector(isLoadingSelector);
 
   //States
-  const [word, setWord] = useState<IWord>({
+  const [word, setWord] = useState<IWordForm>({
     english: "",
     persian: "",
     description: "",

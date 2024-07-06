@@ -12,7 +12,7 @@ import { FC, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 //Types
-import { INextUIModalProps, IWord } from "@/common/interfaces";
+import { INextUIModalProps, IWord, IWordForm } from "@/common/interfaces";
 
 //Redux
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -37,7 +37,7 @@ export const EditWordModal: FC<INextUIModalProps> = ({
   const isLoading = useAppSelector(isLoadingSelector);
 
   //States
-  const [word, setWord] = useState<IWord>({
+  const [word, setWord] = useState<IWordForm>({
     english: "",
     persian: "",
     description: "",
@@ -68,7 +68,7 @@ export const EditWordModal: FC<INextUIModalProps> = ({
   async function submit() {
     try {
       await dispatch(
-        editWordAction((selectedWord as IWord).id as string, word)
+        editWordAction((selectedWord as IWord)._id as string, word)
       );
       toast.success("The word has been edited", {
         position: "top-center",
@@ -80,7 +80,12 @@ export const EditWordModal: FC<INextUIModalProps> = ({
   }
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onCloseHandler} placement="center">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      onClose={onCloseHandler}
+      placement="center"
+    >
       <ModalContent>
         {(onClose) => (
           <>

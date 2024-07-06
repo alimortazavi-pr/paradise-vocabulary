@@ -11,7 +11,7 @@ interface IProps {
   form: IAuthForm;
   setForm: Dispatch<SetStateAction<IAuthForm>>;
 }
-export const MobileInput: FC<IProps> = ({ form, setForm }) => {
+export const FirstNameInput: FC<IProps> = ({ form, setForm }) => {
   //States
   const [error, setError] = useState<{ status: boolean; message: string }>({
     status: false,
@@ -20,23 +20,12 @@ export const MobileInput: FC<IProps> = ({ form, setForm }) => {
 
   //Functions
   function onChangeHandler(e: ChangeEvent<HTMLInputElement>) {
-    if (!e.target.value || e.target.value.length < 11) {
-      setError({ status: true, message: "Mobile format is incorrect" });
-      setForm({
-        ...form,
-        mobile: convertAPToEnglish(e.target.value.replace(/\,/g, "")),
-      });
-    } else if (
-      !convertAPToEnglish(e.target.value.replace(/\,/g, "")).match(/^-?\d+$/)
-    ) {
-      return;
-    } else if (e.target.value.length > 11) {
-      return;
+    if (!e.target.value) {
+      setError({ status: true, message: "Please fill the first name field" });
     } else {
-      setError({ status: false, message: "" });
       setForm({
         ...form,
-        mobile: convertAPToEnglish(e.target.value.replace(/\,/g, "")),
+        firstName: e.target.value,
       });
     }
   }
@@ -44,9 +33,9 @@ export const MobileInput: FC<IProps> = ({ form, setForm }) => {
   return (
     <Input
       type="text"
-      label="Mobile"
+      label="First Name"
       onChange={onChangeHandler}
-      value={form.mobile}
+      value={form.firstName}
       isInvalid={error.status}
       errorMessage={error.message}
       className="mb-3"
