@@ -46,6 +46,8 @@ export const EditWordModal: FC<INextUIModalProps> = ({
 
   //Life cycle
   useEffect(() => {
+    console.log("salam2");
+
     if (selectedWord) {
       setWord(selectedWord);
       (onOpen as () => void)();
@@ -55,14 +57,14 @@ export const EditWordModal: FC<INextUIModalProps> = ({
   }, [selectedWord]);
 
   //Functions
-  function onCloseHandler() {
+  async function onCloseHandler() {
+    await dispatch(setSelectedWord(undefined));
     setWord({
       english: "",
       persian: "",
       description: "",
       important: false,
     });
-    setSelectedWord(undefined);
   }
 
   async function submit() {
