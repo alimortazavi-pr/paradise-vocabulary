@@ -1,5 +1,8 @@
 import jsCookies from "js-cookie";
 
+//Types
+import { IProfile } from "../interfaces";
+
 export const storage = {
   getDarkMode: (): boolean => {
     return jsCookies.get("dark-mode") === "true";
@@ -7,13 +10,20 @@ export const storage = {
   setDarkMode: (darkMode: string) => {
     jsCookies.set("dark-mode", darkMode, { expires: 90 });
   },
-  getToken: (): string | undefined => {
-    return jsCookies.get("token");
+  getUserAuthorization: (): string | undefined => {
+    return jsCookies.get("userAuthorization");
   },
-  setToken: (token: string) => {
-    jsCookies.set("token", token, { expires: 90 });
+  setUserAuthorization: (token: string, user: IProfile) => {
+    jsCookies.set(
+      "userAuthorization",
+      JSON.stringify({
+        token: token,
+        user: user,
+      }),
+      { expires: 90 }
+    );
   },
-  removeToken: () => {
-    jsCookies.remove("token");
+  removeUserAuthorization: () => {
+    jsCookies.remove("userAuthorization");
   },
 };

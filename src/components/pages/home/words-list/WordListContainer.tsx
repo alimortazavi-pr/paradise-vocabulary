@@ -1,50 +1,42 @@
 "use client";
 
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useDisclosure } from "@nextui-org/react";
-import { toast } from "react-toastify";
+
+//Types
+import { IWord } from "@/common/interfaces";
 
 //Redux
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { getAllUserWords } from "@/lib/words/actions";
+import { setWords } from "@/lib/words/actions";
 import { wordsSelector } from "@/lib/words/selectors";
-import { isAuthSelector } from "@/lib/auth/selectors";
 
 //Components
 import { SingleWord } from "./SingleWord";
 import { EditWordModal } from "../create-and-edit-word";
 
-export const WordListContainer = () => {
+interface IProps {
+  words: IWord[];
+}
+export const WordListContainer: FC<IProps> = ({ words }) => {
   //Redux
   const dispatch = useAppDispatch();
-  const words = useAppSelector(wordsSelector);
-  const isAuth = useAppSelector(isAuthSelector);
+  const wordsGlobal = useAppSelector(wordsSelector);
 
   //NextUI
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   //Life cycle
   useEffect(() => {
-    if (isAuth) {
-      getAllUserWordsFunc();
+    if (words) {
+      dispatch(setWords(words));
     }
-  }, [isAuth]);
-
-  //Functions
-  async function getAllUserWordsFunc() {
-    try {
-      await dispatch(getAllUserWords());
-    } catch (error: any) {
-      if (error.message != "jwt malformed") {
-        toast.error(error.message, { position: "top-center" });
-      }
-    }
-  }
+  }, [words]);
 
   return (
     <>
       <div className="p-2 grid grid-cols-12 gap-2">
-        {words?.map((word) => (
+        {wordsGlobal?.map((word) => (
           <SingleWord word={word} key={word._id} />
         ))}
       </div>

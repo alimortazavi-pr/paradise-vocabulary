@@ -1,7 +1,7 @@
 import { AppThunk } from "@/lib";
 
 //Actions of other store
-import { authenticate, saveDataToLocal } from "@/lib/auth/actions";
+import { authenticate } from "@/lib/auth/actions";
 
 //Reducer
 import { profileReducer } from "@/lib/profile";
@@ -12,8 +12,11 @@ export const { setProfile } = profileReducer.actions;
 //Interfaces
 import { IChangeMobileForm, IEditProfileForm } from "@/common/interfaces";
 
-//Tools
+//Services
 import api from "@/services/axiosInstance";
+import { storage } from "@/common/utils";
+
+//Utils
 
 //Actions from actions
 export function getProfile(): AppThunk {
@@ -45,7 +48,10 @@ export function editProfile(form: IEditProfileForm): AppThunk {
           },
         });
         await dispatch(setProfile(res.data.user));
-        saveDataToLocal(getState().auth.token as string, res.data.user);
+        storage.setUserAuthorization(
+          getState().auth.token as string,
+          res.data.user
+        );
       }
     } catch (err: any) {
       throw new Error(err.response.data.message);
@@ -68,7 +74,7 @@ export function changeMobile(form: IChangeMobileForm): AppThunk {
             token: res.data.token,
           })
         );
-        saveDataToLocal(res.data.token, res.data.user);
+        storage.setUserAuthorization(res.data.token, res.data.user);
       }
     } catch (err: any) {
       throw new Error(err.response.data.message);

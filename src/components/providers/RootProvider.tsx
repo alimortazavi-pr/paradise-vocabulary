@@ -2,12 +2,14 @@
 
 import { FC, PropsWithChildren, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 
 //Redux
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { didTryAutoLoginSelector } from "@/lib/auth/selectors";
 import { autoLogin } from "@/lib/auth/actions";
+
+//Utils
+import { storage } from "@/common/utils";
 
 export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
   //Redux
@@ -24,7 +26,7 @@ export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
 
   //Functions
   async function autoLoginFunc() {
-    const userAuthorization = Cookies.get("userAuthorization");
+    const userAuthorization = storage.getUserAuthorization();
     if (userAuthorization && !didTryAutoLogin) {
       const transformedData = JSON.parse(userAuthorization);
       try {

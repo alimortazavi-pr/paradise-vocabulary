@@ -14,9 +14,11 @@ export const { authenticate, setDidTryAutoLogin, logOut, setIsSigningUp } =
 //Interfaces
 import { IAuthForm } from "@/common/interfaces";
 
-//Tools
+//Services
 import api from "@/services/axiosInstance";
-import Cookies from "js-cookie";
+
+//Utils
+import { storage } from "@/common/utils";
 
 //Actions from actions
 export function autoLogin(token: string): AppThunk {
@@ -87,7 +89,7 @@ export function signUp(form: IAuthForm): AppThunk {
         })
       );
       dispatch(setProfile(res.data.user));
-      saveDataToLocal(res.data.token, res.data.user);
+      storage.setUserAuthorization(res.data.token, res.data.user);
       dispatch(setIsLoading(false));
     } catch (err: any) {
       dispatch(setIsLoading(false));
@@ -108,23 +110,11 @@ export function signIn(form: IAuthForm): AppThunk {
         })
       );
       dispatch(setProfile(res.data.user));
-      saveDataToLocal(res.data.token, res.data.user);
+      storage.setUserAuthorization(res.data.token, res.data.user);
       dispatch(setIsLoading(false));
     } catch (err: any) {
       dispatch(setIsLoading(false));
       throw new Error(err.response.data.message);
     }
   };
-}
-
-//Functions
-export function saveDataToLocal(token: string, user: object) {
-  Cookies.set(
-    "userAuthorization",
-    JSON.stringify({
-      token: token,
-      user: user,
-    }),
-    { expires: 90 }
-  );
 }

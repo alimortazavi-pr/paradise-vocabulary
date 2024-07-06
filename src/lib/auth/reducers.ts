@@ -3,8 +3,8 @@ import { PayloadAction } from "@reduxjs/toolkit";
 //Interfaces
 import { IAuthState } from "@/common/interfaces";
 
-//Tools
-import Cookies from "js-cookie";
+//Utils
+import { storage } from "@/common/utils";
 
 const reducers = {
   authenticate: (state: IAuthState, action: PayloadAction<any>): IAuthState => {
@@ -22,7 +22,7 @@ const reducers = {
     };
   },
   logOut: (state: IAuthState): IAuthState => {
-    Cookies.remove("userAuthorization");
+    storage.removeUserAuthorization();
     return {
       ...state,
       didTryAutoLogin: true,
