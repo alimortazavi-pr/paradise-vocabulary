@@ -14,10 +14,10 @@ import { storage } from "@/common/utils";
 export const RootProvider: FC<PropsWithChildren> = ({ children }) => {
   //Redux
   const dispatch = useAppDispatch();
+  const didTryAutoLogin = useAppSelector(didTryAutoLoginSelector);
 
   //Next
   const router = useRouter();
-  const didTryAutoLogin = useAppSelector(didTryAutoLoginSelector);
 
   //Lifecycle
   useEffect(() => {
